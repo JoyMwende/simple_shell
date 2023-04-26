@@ -93,7 +93,7 @@ int print_d(int input, int fd)
  *
  * Return: string
  */
-char *conv_num(long int num, int base, int flags)
+char conv_num(long int num, int base, int flags)
 {
 	static char *array;
 	static char buffer[50];

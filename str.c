@@ -63,7 +63,7 @@ char *starts_with(const char *hstck, const char *ndle)
  * Return: pointer
  */
 
-char *strcat(char *dstn, char *srce)
+char strcat(char *dstn, char *srce)
 {
 	char *ret = dstn;
 

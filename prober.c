@@ -24,14 +24,14 @@ int is_file_cmd(par_t *par, char *pth)
 }
 
 /**
- * dpcte_char - does char duplication
+ * dpct_char - does char duplication
  * @pthstr: string-path
  * @strt: start
  * @stp: stop
  * Return: buf pointer
  */
 
-char dpcte_char(char *pthstr, int strt, int stp)
+char dpct_char(char *pthstr, int strt, int stp)
 {
 	static char buf[1024];
 	int f = 0, e = 0;
@@ -51,7 +51,7 @@ char dpcte_char(char *pthstr, int strt, int stp)
  * Return: full path, else NULL
  */
 
-char *chk_pth(par_t *par, char *pthstr, char *cmd)
+char chk_pth(par_t *par, char *pthstr, char *cmd)
 {
 	int f = 0, curr_pos = 0;
 	char *pth;

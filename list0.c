@@ -24,7 +24,7 @@ size_t linkd_lst_length(const list_t *k)
  * Return: strings array
  */
 
-char **rtrn_str(list_t *head)
+char rtrn_str(list_t *head)
 {
 	list_t *nd = head;
 	size_t f = linkd_lst_length(head), l;
@@ -85,8 +85,7 @@ size_t prt_lst(const list_t *k)
  * @q: next char
  * Return: match nde
  */
-
-list_t *nd_strt(list_t *nd, char *prfx, char q)
+list_t nd_strt(list_t *nd, char *prfx, char q)
 {
 	char *d = NULL;
 

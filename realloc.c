@@ -9,7 +9,7 @@
  *
  */
 
-char *_memset(char *y, char u, unsigned int w)
+char _memset(char *y, char u, unsigned int w)
 {
 	unsigned int f;
 
@@ -42,7 +42,7 @@ void dfree(char *xx)
  * Return: pointer
  */
 
-void *_realloc(void *pr, unsigned int od_size, unsigned int nw_size)
+void _realloc(void *pr, unsigned int od_size, unsigned int nw_size)
 {
 	char *d;
 
