@@ -3,14 +3,14 @@
 /**
  * is_buf_chain - function to test if prevailing buffer
  * character is a chain delimeter
- * @par: struct parameter
+ * @info: struct parameter
  * @bfr: buffer character
  * @d: buffer address
  * Return: 1 if buffer char is chain delimeter
  * 0 if not
  */
 
-int is_buf_chain(par_t *par, char *bfr, size_t *d)
+int is_buf_chain(info_t *info, char *bfr, size_t *d)
 {
 	size_t l = *d;
 
@@ -18,18 +18,18 @@ int is_buf_chain(par_t *par, char *bfr, size_t *d)
 	{
 		bfr[l] = 0;
 		l++;
-		par->cmd_buf_type = CMD_OR;
+		info->cmd_buf_type = CMD_OR;
 	}
 	else if (bfr[l] == '&' && bfr[l + 1] == '&')
 	{
 		bfr[l] = 0;
 		l++;
-		par->cmd_buf_type = CMD_AND;
+		info->cmd_buf_type = CMD_AND;
 	}
 	else if (bfr[l] == ';')
 	{
 		bfr[l] = 0;
-		par->cmd_buf_typer = CMD_CHAIN;
+		info->cmd_buf_typer = CMD_CHAIN;
 	}
 	else
 	{
@@ -42,7 +42,7 @@ int is_buf_chain(par_t *par, char *bfr, size_t *d)
 /**
  * chk_buf_chain - function to check if chaining
  * should progress
- * @par: struct parameter
+ * @info: struct parameter
  * @bfr: buffer character
  * @d: buffer address
  * @a: buffer start point
@@ -50,22 +50,22 @@ int is_buf_chain(par_t *par, char *bfr, size_t *d)
  * Return: void
  */
 
-void chk_buf_chain(par_t *par, char *bfr, size_t *d, size_t a, size_t cnt)
+void chk_buf_chain(info_t *info, char *bfr, size_t *d, size_t a, size_t cnt)
 {
 	size_t l = *d;
 
-	if (par->cmd_buf_type == CMD_AND)
+	if (info->cmd_buf_type == CMD_AND)
 	{
-		if (par->status)
+		if (info->status)
 		{
 			bfr[a] = 0;
 			l = cnt;
 		}
 	}
 
-	if (par->comd_buf_type == CMD_OR)
+	if (info->comd_buf_type == CMD_OR)
 	{
-		if (!par->status)
+		if (!info->status)
 		{
 			bfr[a] = 0;
 			l = cnt;
@@ -78,12 +78,12 @@ void chk_buf_chain(par_t *par, char *bfr, size_t *d, size_t a, size_t cnt)
 /**
  * rplc_aliases - function to replace tokenized string aliases
  *
- * @par: struct parameter
+ * @info: struct parameter
  * Return: 1 if rplc_aliases is successful
  * 0 if not successful
  */
 
-int rplc_aliases(par_t *par)
+int rplc_aliases(info_t *info)
 {
 	int f;
 	list_t *nd;
@@ -94,14 +94,14 @@ int rplc_aliases(par_t *par)
 	while (f < 10)
 	{
 		f++;
-		nd = node_starts_with(par->alias, par->argv[0], '=')
+		nd = node_starts_with(info->alias, info->argv[0], '=')
 		if (!nd)
 			return (0);
-		free(par->argv[0]);
-		d = _strchr(nd->str, '=');
+		free(info->argv[0]);
+		d = strchr(nd->str, '=');
 		if (!d)
 			return (0);
-		d = _strdup(d + 1);
+		d = strdup(d + 1);
 		if (!d)
 			return (0);
 		par->argv[0] = d;
@@ -111,41 +111,41 @@ int rplc_aliases(par_t *par)
 
 /**
  * rplc_variabs - function to replace string variables
- * @par: struct parameter
+ * @info: struct parameter
  * Return: 1 if function successful
  * 0 if not successful
  */
 
-int rplc_variabs(par_t *par)
+int rplc_variabs(info_t *info)
 {
 	int f = 0;
 	list_t *nd;
 
-	for (f = 0; par->argv[f]; f++)
+	for (f = 0; info->argv[f]; f++)
 	{
-		if (par->argv[f][0] != '$' || !par->argv[f][1])
+		if (info->argv[f][0] != '$' || !info->argv[f][1])
 			continue;
 
-		if (!_strcmp(par->argv[f], "$?"))
+		if (!strcmp(info->argv[f], "$?"))
 		{
-			replace_string(&(par->argv[f]),
-					_strdup(convert_number(par->status, 10, 0)));
+			replace_string(&(info->argv[f]),
+					strdup(convert_number(info->status, 10, 0)));
 			continue;
 		}
-		if (!_strcmp(par->argv[f]. "$$"))
+		if (!_strcmp(info->argv[f]. "$$"))
 		{
-			replace_string(&(par->argv[f]),
-					_strdup(convert_number(getpid(), 10, 0)));
+			replace_string(&(info->argv[f]),
+					strdup(convert_number(getpid(), 10, 0)));
 			continue;
 		}
-		nd = node_starts_with(par->env, &info->argv[f][1], '=');
+		nd = node_starts_with(info->env, &info->argv[f][1], '=');
 		if (nd)
 		{
-			replace_string(&(par->argv[f]),
-					_strdup(_strchr(nd->str, '=') + 1));
+			replace_string(&(info->argv[f]),
+					strdup(strchr(nd->str, '=') + 1));
 			continue;
 		}
-		replace_string(&par->argv[f], _strdup(""));
+		replace_string(&info->argv[f], _strdup(""));
 	}
 	return (0);
 }

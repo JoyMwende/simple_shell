@@ -3,16 +3,16 @@
 /**
  * is_file_cmd - function to check if file
  * is an executable cmd
- * @par: info struct
+ * @info: info struct
  * @pth: file-path
  * Return: 1 if success, 0 if not
  */
 
-int is_file_cmd(par_t *par, char *pth)
+int is_file_cmd(info_t *info, char *pth)
 {
 	struct stat st;
 
-	(void)par;
+	(void)info;
 	if (!pth || stat(pth, &st))
 		return (0);
 
@@ -45,22 +45,22 @@ char dpcte_char(char *pthstr, int strt, int stp)
 
 /**
  * chk_pth - find cdm in PATH
- * @par: info struct
+ * @info: info struct
  * @pthstr: PATH str
  * @cmd: cmd find
  * Return: full path, else NULL
  */
 
-char *chk_pth(par_t *par, char *pthstr, char *cmd)
+char *chk_pth(info_t *info, char *pthstr, char *cmd)
 {
 	int f = 0, curr_pos = 0;
 	char *pth;
 
 	if (!pthstr)
 		return (NULL);
-	if ((_strlen(cmd) > 2) && starts_with(cmd. "./"))
+	if ((strlen(cmd) > 2) && starts_with(cmd. "./"))
 	{
-		if (is_file_cmd(par, cmd))
+		if (is_file_cmd(info, cmd))
 			return (cmd);
 	}
 	while (1)
@@ -69,13 +69,13 @@ char *chk_pth(par_t *par, char *pthstr, char *cmd)
 		{
 			pth = dpcte_char(pthstr, curr_pos, f);
 			if (!pth)
-				_strcat(pth, cmd);
+				strcat(pth, cmd);
 			else
 			{
-				_strcat(pth, "/");
-				_strcat(pth, cmd);
+				strcat(pth, "/");
+				strcat(pth, cmd);
 			}
-			if (is_file_cmd(par, pth))
+			if (is_file_cmd(info, pth))
 				return (pth);
 			if (!pthstr[f])
 				break;
